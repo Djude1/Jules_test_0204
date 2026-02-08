@@ -48,7 +48,7 @@ void initCamera() {
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
-  config.frame_size = FRAMESIZE_VGA;
+  config.frame_size = FRAMESIZE_QVGA; // Reduced from VGA to QVGA for smoother streaming
   config.pixel_format = PIXFORMAT_JPEG; // for streaming
   config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;
   config.fb_location = CAMERA_FB_IN_PSRAM;
@@ -153,6 +153,12 @@ static esp_err_t stream_handler(httpd_req_t *req) {
 void startCameraServer() {
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   config.server_port = 80; // Standard HTTP port
+
+  // Optimization for streaming
+  config.max_open_sockets = 7;
+  config.lru_purge_enable = true;
+  config.recv_wait_timeout = 2; // Reduced timeout
+  config.send_wait_timeout = 2; // Reduced timeout
 
   httpd_uri_t stream_uri = {
     .uri       = "/stream",

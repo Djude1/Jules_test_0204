@@ -47,6 +47,11 @@ def main():
     print("Loading YOLO11n model...")
     try:
         model = YOLO("yolo11n.pt")
+        print(f"Model loaded successfully. Running on device: {model.device}")
+        if model.device.type == 'cpu':
+             print("WARNING: Running on CPU. Performance may be slow.")
+        else:
+             print("SUCCESS: Running on GPU.")
     except Exception as e:
         print(f"Error loading model: {e}")
         sys.exit(1)
