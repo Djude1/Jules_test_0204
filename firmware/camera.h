@@ -128,7 +128,7 @@ static esp_err_t stream_handler(httpd_req_t *req) {
       res = httpd_resp_send_chunk(req, (const char *)part_buf, hlen);
     }
     if(res == ESP_OK){
-      res = httpd_resp_send_chunk(req, (const uint8_t *)_jpg_buf, _jpg_buf_len);
+      res = httpd_resp_send_chunk(req, (const char *)_jpg_buf, _jpg_buf_len);
     }
     if(res == ESP_OK){
       res = httpd_resp_send_chunk(req, "\r\n--frame\r\n", 12);
