@@ -1,3 +1,5 @@
+// File: firmware/mic.h
+
 #ifndef MIC_H
 #define MIC_H
 

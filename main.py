@@ -1,3 +1,4 @@
+# File: main.py
 import cv2
 from ultralytics import YOLO
 import pyttsx3
