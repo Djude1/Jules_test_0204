@@ -1,3 +1,5 @@
+// File: firmware/gyroscope.h
+
 #ifndef GYROSCOPE_H
 #define GYROSCOPE_H
 

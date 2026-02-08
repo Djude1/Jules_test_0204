@@ -1,3 +1,5 @@
+// File: firmware/main/main.ino
+
 #include <WiFi.h>
 #include "../camera.h"
 #include "../gyroscope.h"
