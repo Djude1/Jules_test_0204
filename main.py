@@ -7,6 +7,8 @@ import queue
 import time
 import sys
 import argparse
+import requests
+import numpy as np
 
 # TTS Setup
 speech_queue = queue.Queue()
@@ -42,6 +44,11 @@ def main():
     parser = argparse.ArgumentParser(description="YOLO11 Obstacle Avoidance System")
     parser.add_argument("--url", type=str, default="http://192.168.1.100/stream", help="URL of the ESP32 MJPEG stream (e.g., http://192.168.x.x/stream)")
     args = parser.parse_args()
+
+    # Determine Base URL for API calls
+    base_url = args.url.rsplit('/', 1)[0]
+    alert_url = f"{base_url}/alert"
+    print(f"Alert URL configured as: {alert_url}")
 
     # Load YOLO11 Model
     print("Loading YOLO11n model...")
@@ -121,10 +128,19 @@ def main():
         if detected_obstacle:
             current_time = time.time()
             if current_time - last_speech_time > SPEECH_COOLDOWN:
-                print("Obstacle Detected! Triggering TTS...")
-                # Only put in queue if empty to ensure responsiveness
+                print("Obstacle Detected! Triggering Alert...")
+
+                # 1. Trigger PC TTS
                 if speech_queue.empty():
                     speech_queue.put("偵測到障礙物，請注意")
+
+                # 2. Trigger ESP32 Alert (Glasses Speaker)
+                try:
+                    # Using a thread/non-blocking call here would be better, but a short timeout is okay
+                    threading.Thread(target=requests.get, args=(alert_url,), kwargs={'timeout': 1.0}).start()
+                except Exception as e:
+                    print(f"Failed to trigger ESP32 alert: {e}")
+
                 last_speech_time = current_time
 
         cv2.imshow("YOLO11 Obstacle Avoidance", frame)

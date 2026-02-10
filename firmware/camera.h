@@ -6,7 +6,7 @@
 #include "esp_camera.h"
 #include "esp_http_server.h"
 
-// XIAO ESP32S3 Sense Camera Pins (OV2640)
+// XIAO ESP32S3 Sense Camera Pins (OV3660)
 #define PWDN_GPIO_NUM    -1
 #define RESET_GPIO_NUM   -1
 #define XCLK_GPIO_NUM    10
